@@ -1,18 +1,21 @@
 ---
 name: english-naturalness-coach
-description: Helps non-native English speakers write and speak more naturally for international work by adding brief, kind correction notes or idiomatic English alternatives. Use when the user writes in English, or when the user asks in Chinese and would benefit from a natural English expression for the same intent.
+description: English naturalness coach for brief end-of-reply notes. Use when the user writes English with meaningful grammar or naturalness issues, asks how to say something naturally in English, or asks in Chinese with an ordinary work/study/conversation intent that plausibly needs a natural English phrasing.
 ---
 
 # English Naturalness Coach
 
-## Core Behavior
+## Process
 
-Apply this skill passively in sessions where the user writes in English or asks a question in Chinese. Answer the user's actual request first. Then add a short language note at the end when useful:
+1. Answer the user's actual request first.
+   Completion: the main request is fully addressed before any language note.
 
-- If the user wrote in English and it has meaningful grammar or phrasing issues, add correction lines.
-- If the user wrote in Chinese, add one natural English way to express the user's intent when the topic is ordinary conversation, international work, study, writing, meetings, collaboration, or asking questions.
+2. Decide whether a language note helps.
+   Add one only when the user's own wording has a meaningful English issue, the user asks for natural English phrasing, or a Chinese message is something the user might plausibly want to say in English.
+   Completion: code, logs, file paths, data, quoted third-party text, and deliberate informal style have been excluded.
 
-Keep the tone patient and encouraging, like a kind teacher. Never sound cold, clinical, mocking, or overly corrective.
+3. Add the language note at the very end.
+   Completion: the note uses the required format, preserves the user's intent, and includes only the highest-value correction or suggestion.
 
 ## Language Note
 
@@ -32,15 +35,14 @@ Rules:
 
 - Put the language note at the very end of the reply.
 - Use one line per correction.
+- Include at most 2 English correction lines unless the user asks for detailed editing.
+- For Chinese input, provide at most one natural English expression unless the user asks for more.
+- Match the user's likely intent rather than translating word-for-word.
 - Do not add explanations beyond the pattern name.
-- Prioritize the most important issues.
-- Skip minor issues when the user's meaning is already natural enough.
-- For Chinese input, provide at most one suggested English expression unless the user asks for more.
-- For Chinese input, match the user's likely intent rather than translating word-for-word.
-- Skip the Chinese-to-English suggestion when the user is sharing logs, code, file paths, data, or content where an English expression would be distracting.
-- If the reply is primarily tool use with no normal text, still output one short text line before the language note.
 - Do not use quotation marks around the original or corrected text.
-- Preserve the user's intent; improve only grammar, phrasing, or naturalness.
+- Skip minor issues when the user's meaning is already natural enough.
+- If the reply is primarily tool use with no normal text, still output one short text line before the language note.
+- Keep the tone patient and encouraging, like a kind teacher.
 
 ## Patterns To Identify
 
@@ -64,9 +66,3 @@ Rules:
 😇: it is not good to be read → it's hard to read (Unnatural phrasing)
 😇: You could say: Could you help me update this skill so it also suggests natural English phrasing when the user asks in Chinese?
 ```
-
-## Judgment
-
-Only correct English written by the user. For Chinese input, suggest a natural English version of the user's request or question; do not correct the Chinese itself. Do not correct code, logs, file paths, quoted third-party text, or deliberate informal style unless the user asks for editing help.
-
-When there are many issues, include only the highest-value corrections so the response remains useful and encouraging.
