@@ -6,71 +6,54 @@ disable-model-invocation: true
 
 # Codebase Trick Hunt
 
-Hunt for compact, language-specific tricks in the current codebase and report them as reusable tips.
+Find small, portable coding tricks suggested by a codebase, then report them as concise tips.
 
 ## Trick
 
-A trick is a small language, standard-library, framework, or type-system move that an experienced developer may know but a newcomer may miss. It must be specific enough to change code, not a general principle.
+A trick is a language, standard-library, framework, library, or type-system move that is useful but easy for a newcomer to miss. It should be concrete enough to change code and general enough to reuse outside this repository.
 
-Good tricks include:
+Good trick families include:
 
-- A built-in API that replaces hand-written control flow.
-- A type-system expression that extracts or constrains useful information.
-- A language idiom that makes a local pattern shorter, safer, or clearer.
-- A common library helper already available in the project.
+- Built-in APIs that replace manual loops or branching.
+- Collection, iterator, string, path, async, or error-handling helpers.
+- Type-system expressions that derive or constrain useful types.
+- Existing project dependencies that provide a sharper helper than plain code.
+- Idioms that make a small pattern shorter, safer, or clearer.
 
-Reject generic advice, style preferences, architecture opinions, and tips that do not depend on the language or project stack.
+Reject generic advice, style opinions, architecture advice, and facts that only matter inside this repository.
 
 ## Workflow
 
-1. Map the stack.
-   - Inspect project metadata, extensions, lockfiles, and representative source files.
-   - Identify the main languages and major libraries worth hunting in.
-   - Completion: every searched language or stack surface is named.
+1. Map the hunting ground.
+   - Inspect metadata, lockfiles, config, and representative source files.
+   - Identify the main languages, versions, and major libraries worth checking.
+   - Completion: the searched languages and stack areas are named.
 
-2. Mine candidates.
-   - Search for loops, filtering, grouping, indexing, object/key manipulation, error handling, option/result handling, async patterns, type definitions, and repeated helper code.
-   - For each language, look for both tricks already used and nearby code that could use a known built-in or idiom.
-   - Completion: each main language has been checked for candidate patterns, or explicitly marked as skipped with a reason.
+2. Hunt for candidates.
+   - Look around loops, searches, filters, grouping, indexing, parsing, key/object manipulation, option/result handling, async code, repeated helpers, and type definitions.
+   - Include tricks already used in the code and tricks that would simplify nearby code.
+   - Completion: each main language or stack area has been checked or explicitly skipped.
 
-3. Verify the trick.
-   - Confirm the API, syntax, or idiom is available in this codebase's language version or dependencies.
-   - Prefer project source, config, lockfiles, and dependency docs over memory.
-   - Completion: every retained trick has evidence from code, config, or exact dependency/version knowledge; uncertain tricks are dropped or labeled.
+3. Keep only real tricks.
+   - Confirm the move is available in the project's language version or dependencies.
+   - Drop anything too obvious, too broad, too clever without benefit, or too tied to local domain concepts.
+   - Completion: every retained trick is locally plausible and portable.
 
-4. Compress into tips.
-   - Write each trick as a short `tip` first. If it cannot fit as one sentence, add a tiny example.
-   - Keep the tip actionable: name the language or library, the move, and when to use it.
-   - Completion: every retained trick is expressed as a reusable tip, not a long explanation.
+4. Distill the tip.
+   - Name the language or library, the move, and the general operation it solves.
+   - Replace domain-specific situations with broad operations such as finding an index, keeping matching items, inspecting adjacent values, deriving key unions, or flattening nested values.
+   - Completion: each tip can stand alone without knowing the repository.
 
 5. Report the list.
    - Group tips by language or stack area.
-   - Include a file reference when the trick was found in or suggested by local code.
-   - If no good tricks are found, report the searched surfaces and the strongest near-misses.
-   - Completion: the user receives a concise list of tips with enough context to apply them.
+   - Keep each tip short; add a tiny example only when a one-line tip would be unclear.
+   - Include file paths as optional evidence, not as the subject of the tip.
+   - Completion: the user receives a concise list of reusable tips.
 
-## Tip Format
-
-Prefer this shape:
+## Tip Template
 
 ```md
-- tip: In <language/library>, use <move> when <situation> instead of <common beginner approach>. (`path/to/file.ext`)
+- tip: In <language/library>, use <move> to <general operation> instead of <beginner approach>. Evidence: `path/to/file.ext`.
 ```
 
-Use a small example only when the tip would otherwise be ambiguous:
-
-````md
-- tip: In TypeScript, use `keyof typeof obj` to derive a union of an object's keys instead of duplicating string literals.
-
-  ```ts
-  const routes = { home: '/', settings: '/settings' } as const;
-  type RouteName = keyof typeof routes; // 'home' | 'settings'
-  ```
-````
-
-## Quality Bar
-
-- Prefer five strong tips over twenty generic ones.
-- A trick must be locally relevant: present in the codebase, enabled by its stack, or a clear replacement for nearby code.
-- Do not present risky cleverness as a trick unless the trade-off is named.
-- Do not rewrite the code unless the user asks; this skill produces tips.
+If evidence is unnecessary or unavailable, omit the evidence sentence.
