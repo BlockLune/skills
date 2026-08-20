@@ -1,0 +1,5 @@
+interface:
+  display_name: "translate"
+  short_description: "Translate text or file."
+policy:
+  allow_implicit_invocation: false

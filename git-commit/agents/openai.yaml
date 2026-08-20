@@ -1,0 +1,5 @@
+interface:
+  display_name: "git-commit"
+  short_description: "Commit changes using user's preferred conventions."
+policy:
+  allow_implicit_invocation: false
