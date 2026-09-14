@@ -1,0 +1,5 @@
+interface:
+  display_name: "markdown-document-writing"
+  short_description: "撰写、修订 Markdown 文档并检查格式。"
+policy:
+  allow_implicit_invocation: false
