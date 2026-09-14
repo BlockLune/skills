@@ -1,55 +1,35 @@
-# Edge Types
+# 间接连接的查证方法
 
-Use the smallest bridge that makes adjacent nodes intelligibly connected. The trace remains scenario-specific: an edge explains why this behavior reaches the next node, not every relationship in the repository.
+查证的重点是：在当前场景下，什么机制让工作从这一端到达另一端？找到足以回答这个问题的证据即可，无需展开整套框架。
 
-## Direct execution
+## 注册、回调与事件
 
-A call, constructor invocation, or language-native dispatch can connect caller and callee directly. Read both ends when needed to establish the current contract and next handoff.
+路由、界面动作、命令表、插件注册和事件订阅，通常靠某个键、选择规则或回调位置连接触发方与处理方。
 
-## Registered dispatch
+把触发位置、匹配规则和实际目标连起来。只找到注册代码，还不足以说明事件会在本场景中到达这里；只找到同名事件，也需要核对发布与订阅是否使用同一通道。
 
-Routes, UI actions, command maps, event subscribers, plugin registries, and dispatch tables connect a trigger to selected code through a key or registration.
+如果注册发生在启动阶段，把它作为背景说明，不要写成每次行为都会执行的步骤。同步调用、排队执行和框架调度会影响场景时，说明交付时机。
 
-Show the trigger, the key or selection rule, and the registered target when source establishes them. Keep registration as startup or framework context when it is not executed by the scenario itself.
+## 接口背后的实现选择
 
-## Resolution
-
-For service location, dependency injection, reflection, or protocol/interface dispatch, follow the smallest available resolution bridge:
+依赖注入、服务查找、反射和接口分派，需要追到实际选择实现的地方：
 
 ```text
-requesting site → key or contract → binding/configuration → selected implementation
+使用方 → 请求的键或接口 → 绑定规则或配置 → 本场景选中的实现
 ```
 
-A static binding can confirm an implementation. A runtime-dependent binding remains a candidate until configuration, generated output, or observation selects it. If selection stays unavailable, end at a gap and name the configuration or observation that would resolve it.
+静态绑定可能足以确认目标；受环境、功能开关或运行状态影响的绑定，则要查明相应条件。缺少实际配置或运行证据时，保留候选，并指出还需要什么才能确定选择。
 
-## Callback and event delivery
+## 异步任务与跨系统交接
 
-Connect registration/subscription to invocation through the event, selector, route, or callback slot that binds them. Explain whether delivery is synchronous, queued, or framework-controlled when that changes the scenario.
-
-## Async and cross-boundary work
-
-Represent async work as a boundary with its own contract:
+异步代码在源码中相邻，不等于属于同一次执行。查清任务如何被提交、由什么承载，以及在哪里恢复或消费：
 
 ```text
-schedule or publish → transport/queue/task context → resume or consume
+提交任务或发布消息 → 队列、传输通道或任务上下文 → 恢复执行或消费
 ```
 
-Show the scheduler, message, task, or correlation mechanism that connects the two sides. A process, network, database, or platform API is a useful terminal boundary unless the user asks to trace further.
+用调度关系、消息类型、任务标识或关联信息连接两端。追到进程、网络、数据库或平台 API 边界时，可以说明交接内容后停止；用户要求继续时，再查另一端。
 
-## Generated and reflective code
+## 生成代码与反射
 
-Inspect generated source, schemas, build configuration, metadata, or naming conventions that select the target. When those artifacts establish only a set of possible targets, report the set as candidates and retain the unresolved selection condition.
-
-## Structural context
-
-Inheritance, protocol conformance, imports, directory ownership, and base classes explain a node's available contract or lifecycle. Present them beside the relevant node; they become a trace hop only when source shows an actual dispatch or resolution through them.
-
-## Evidence language
-
-Match certainty to evidence rather than imposing a fixed citation format:
-
-- **Confirmed**: source, configuration, generated output, or runtime observation establishes this relationship for the scenario.
-- **Candidate**: source narrows the relationship but a runtime condition or missing artifact still chooses the target.
-- **Gap**: available evidence cannot establish the relationship.
-
-Use paths, symbols, and line locations at the granularity that lets the reader reproduce an important claim. Give alternatives a condition such as platform, feature flag, registration, message type, or runtime state.
+目标不直接出现在调用处时，查生成源码、模式定义、构建配置、元数据或命名规则。区分“这些材料能生成或选中哪些目标”和“本场景实际选中了谁”；前者只能给出候选，不能代替后者。

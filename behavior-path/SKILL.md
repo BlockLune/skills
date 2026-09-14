@@ -1,44 +1,41 @@
 ---
 name: behavior-path
-description: Trace one evidence-backed behavior path through a codebase, forward from a user action or business entry to an effect, or backward from a symbol to its trigger. Use when the user asks how behavior reaches code, what triggers a module, or how callbacks, indirect wiring, or async work connect.
+description: 沿一个具体场景追踪代码执行路径，解释某个行为如何产生结果，或某段代码由什么触发。
 disable-model-invocation: true
 ---
 
-# Behavior Path
+# 行为路径
 
-A **trace** is one scenario-specific, evidence-backed path. It explains a high-level behavior as connected code relationships, rather than reconstructing the repository's whole architecture.
+围绕一个场景，讲清楚代码为什么会走到这里、接下来又会发生什么。交付的是一条有证据的行为路径，不是整个项目的架构介绍或符号引用清单。
 
-## Trace contract
+## 确认追踪路径
 
-- Establish the direction, scenario, and available anchors first. Accept a natural-language behavior plus optional files, symbols, UI text, logs, or target effect.
-- Trace execution and resolution relationships as the main path. Present inheritance, protocols, framework contracts, and registration as nearby black-box context when they explain a node.
-- Give each node a stable abstraction level: what it receives, its responsibility in this scenario, and what it hands off or causes next. Descend into internals only when that establishes the next relationship.
-- Let source evidence set the claim. A confirmed link, a viable candidate, and an unresolved gap are different results.
-- Explore the selected scenario deeply. Mention alternative paths as bounded possibilities; expand one only when the user requests it.
+“做了这件事之后发生什么”适合从入口向结果追；“这段代码什么时候执行”适合从目标向触发源追。结合用户描述、文件、符号、界面文案或日志找到起点，仓库里能查到的事实自行查证。
 
-## Steps
+方向不明确，或多个起点同样符合场景时，简要列出差别，请用户选择。确定后持续追踪这一条路径；其他分支只交代成立条件，用户要求时再展开。
 
-1. **Frame the trace.**
-   - Infer `forward` for “what happens after X?” and `backward` for “what triggers X?”. Ask for the direction only when both remain plausible.
-   - Identify the scenario, anchor, and desired end. For a forward trace, end at the requested observable effect or an external boundary. For a backward trace, end at the scenario's entry or boundary.
-   - Completion: the trace has a direction, one scenario, and either a concrete anchor or a candidate-selection question.
+## 解释清楚每段连接
 
-2. **Locate the anchor.**
-   - Read repository instructions and inspect the relevant entrypoints, metadata, configuration, tests, and source around each candidate.
-   - Use the scenario, platform, and supplied anchor to select a candidate. When equally plausible candidates remain, present them briefly and wait for the user's choice.
-   - Completion: the first node is tied to source evidence, or the user is choosing among equally plausible candidates.
+阅读代码时关注：当前节点接收了什么，在这个场景中负责什么，又把工作交给了谁。保持相近的抽象层次，只有解释不清下一段连接时才深入内部实现。
 
-3. **Walk the trace.**
-   - At each hop, name the relationship, inspect the code that establishes it, and explain the current node as a black box before continuing.
-   - For every non-direct hop—callback, event, route, service lookup, reflection, generated code, async scheduling, or process boundary—read [`references/EDGE_TYPES.md`](references/EDGE_TYPES.md) before selecting the next node.
-   - Treat unresolved evidence as an explicit trace endpoint. State what is known, what would establish the connection, and the smallest useful verification.
-   - Completion: the selected scenario reaches its endpoint or an explicit evidence gap, and every displayed hop has a named relationship and evidence strength.
+路径上的箭头需要依据。直接调用可以从调用点确认；回调、事件、依赖注入等间接关系，还需要找到把两端接起来的机制。遇到这类关系时，阅读[间接连接的查证方法](references/EDGE_TYPES.md)。
 
-4. **Report the trace.**
-   - Answer in the user's language. Keep the main path continuous and readable; attach only the structural context needed to understand each node.
-   - Include alternate paths as short, condition-bound leads. Use [`references/REPORTING.md`](references/REPORTING.md) when the trace includes alternatives, gaps, indirect dispatch, or a requested Markdown artifact.
-   - Completion: a reader can distinguish the selected path, its evidence, its context, its alternatives, and its gaps without mistaking one for another.
+继承、接口实现、框架约定和注册信息通常是理解节点的背景。只有它们确实参与本次调用或实现选择时，才作为路径的一段。类之间有关联，不代表这个场景会经过它们。
 
-## Interaction
+## 证据决定能讲到哪里
 
-Read facts from the repository instead of asking the user to supply them. Pause only for an ambiguous direction, equally plausible scenario candidates, a requested alternate path, or an evidence gap that requires a user decision. Keep tracing between those points.
+明确区分：
+
+- **已确认**：源码、配置、生成产物或运行观察足以确定本场景中的连接。
+- **候选**：找到了可能的目标，但还缺决定实际选择的条件。
+- **缺口**：现有证据无法连接两端。
+
+重要判断附上可复查的文件、符号、行号或其他材料位置。不能确认的连接就停在缺口处，说明已知事实、缺少什么，以及最小的查证办法；需要用户作决定时再提问。
+
+正向追到用户关心的结果，反向追到场景入口。外部系统或平台边界也可以作为终点，除非用户要求继续。优先利用现有测试、日志、配置和构建产物查证；增加探针或修改仓库代码前取得用户许可。
+
+## 让读者看见一条连续路径
+
+用用户的语言交代场景、追踪方向和停止原因，再展示主路径。每段说明连接方式及证据，把必要背景放在对应节点旁，候选和缺口不要混写成已确认的执行过程。
+
+涉及间接调用、备选分支、证据缺口，或需要保存文档时，阅读[结果组织](references/REPORTING.md)。默认直接回复；用户要求保存时才写入指定的 Markdown 文件。

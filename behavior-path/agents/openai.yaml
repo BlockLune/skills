@@ -1,0 +1,5 @@
+interface:
+  display_name: "behavior-path"
+  short_description: "沿一个具体场景追踪代码执行路径，解释某个行为如何产生结果，或某段代码由什么触发。"
+policy:
+  allow_implicit_invocation: false

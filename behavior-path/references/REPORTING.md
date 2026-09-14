@@ -1,43 +1,29 @@
-# Reporting a Behavior Trace
+# 结果组织
 
-Adapt the report to the reader and trace complexity. The headings below separate facts that otherwise blur together; omit empty sections rather than filling a template.
+以读者能沿着路径理解行为为准，按需要使用下列写法，不必凑齐固定章节。
 
-## Main trace
+## 主路径与背景分开
 
-Start with the direction, scenario, and stopping status. Then present one continuous sequence of nodes.
+主路径展示本次行为实际经过的节点。间接调用要展示出中间的连接依据，避免从接口名直接跳到实现类。
 
-For each node, include enough of the following to make it a black box at its current level:
+例如，可以把“请求接口 → 根据配置选择实现 → 调用实现”放在主路径中，把“启动时在哪里注册绑定”附在选择节点旁。这样既能解释为什么选中它，也不会让读者误以为本次请求重新执行了注册。
 
-- **Role**: what this node owns for the scenario.
-- **Receives / produces**: the meaningful event, input, state change, or result.
-- **Next relationship**: call, dispatch, resolution, scheduling, consumption, or boundary.
-- **Evidence**: source locations or named artifacts, with its confirmed/candidate/gap strength.
-- **Context**: only the protocol, base class, framework rule, or registration needed to make this node understandable.
+## 分支交代选择条件
 
-A forward trace normally ends at an observable effect or external boundary. A backward trace normally ends at the scenario's user, framework, job, or process entry.
+把其他路径放在主路径之外，说明什么时候会走过去，并给出决定分支的证据。例如：
 
-## Alternatives
+> 关闭 `FeatureFlagX` 时会改用 `FallbackHandler`；附上检查该开关的源码位置。
 
-List alternatives outside the main trace as short leads:
+只有名称、没有成立条件的备选列表，对理解当前场景帮助不大。
 
-```md
-- `FeatureFlagX = false` selects `FallbackHandler` instead of `PrimaryHandler`.
-```
+## 缺口写到可以继续查证
 
-Keep each lead conditional and name the deciding evidence. Trace it only on request.
+指出断在哪里、缺什么材料，以及下一步怎样用最小代价确认。例如：
 
-## Gaps and verification
+> 已确认调用方请求 `PaymentClient`，但已检查的配置中没有实际绑定，暂时无法确定实现。下一步可查看生产环境的依赖组装入口，或在现有集成测试中观察解析结果。
 
-Make a gap useful:
+把这段说明放在中断位置或单独的“未确认”部分，让读者清楚路径并未闭合。
 
-```md
-## Unresolved
-- The container receives `PaymentClient`, but the active binding is absent from the checked configuration.
-  Smallest verification: inspect the production composition root or observe the resolved implementation in the existing integration test.
-```
+## 保存为文档
 
-Prefer a safe, existing test, log, configuration, or build artifact as verification. Request permission before adding instrumentation or changing repository code.
-
-## Requested artifacts
-
-The default result is conversational. When the user asks to preserve it, write the same separation—main trace, context, alternatives, and gaps—to the requested Markdown location. Keep its evidence current and scoped to the named scenario.
+用户要求保存时，写到指定的 Markdown 位置。保留场景范围和证据位置，并让主路径、背景、备选分支与缺口容易区分；不必把对话中的探索过程全部写入。
