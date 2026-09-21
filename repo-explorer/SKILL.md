@@ -1,6 +1,6 @@
 ---
 name: repo-explorer
-description: Explore external repositories using a reusable local clone cache. Use when answering questions about or comparing repositories outside the current workspace.
+description: Use when the user provides a remote repository URL for read-only exploration or comparison. Clone into or reuse a local reference cache to inspect the source.
 allowed-tools: Bash(mkdir -p ~/.explore/repos) Bash(ls -la ~/.explore/repos) Bash(git clone *) Bash(rg *)
 ---
 
