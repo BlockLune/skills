@@ -1,0 +1,5 @@
+interface:
+  display_name: "Arena"
+  short_description: "对同一任务并行生成多个候选，独立评审后择优融合，交付经过验证的结果。"
+policy:
+  allow_implicit_invocation: false
