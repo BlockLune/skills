@@ -4,15 +4,12 @@ description: Commit changes using user's preferred conventions.
 disable-model-invocation: true
 ---
 
-Review the current changes and create commits.
+Review the current changes and create atomic, cherry-pickable Conventional Commits.
 
 Rules:
 
-- Commit only files changed for this task.
-- Use Conventional Commits.
-- Keep the title concise and imperative.
-- Each commit must have both a title and a description.
-- Commits must be fully atomic and cherry-pickable.
-- Do not include unrelated changes.
-- Run relevant checks before committing.
-- Never push commits to a remote unless explicitly asked.
+- Commit only files related to the current task.
+- Keep the title concise and imperative, and include a description body.
+- State the problem context and user-visible impact first, then the solution; explain why the change was made rather than restating the code diff.
+- Omit self-referential phrases (such as "This commit fixes...") and compliance declarations.
+- Run relevant checks before committing, and push only when explicitly asked.
