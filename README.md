@@ -46,3 +46,5 @@ npx skills add BlockLune/skills
 - [Quantifying Overclaiming Propensity in Frontier LLM Agents (arXiv:2609.20812)](https://arxiv.org/abs/2609.20812) & [Plans They Abandon, Reports They Author (arXiv:2609.12205)](https://arxiv.org/abs/2609.12205)
 - [I hated making this video... - Theo - YouTube](https://www.youtube.com/watch?v=FDxW2bfBOWE)
 - [The One Weird Git Trick That Makes Coding Agents More Effect-ive | Effect Documentation](https://effect.website/blog/the-one-weird-git-trick-that-makes-coding-agents-more-effect-ive/)
+- <https://x.com/jakevin7/status/2112244985156481059>
+- <https://x.com/vista8/status/2107887033947660597>
