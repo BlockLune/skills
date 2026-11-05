@@ -17,7 +17,7 @@ npx skills add BlockLune/skills
 | `AGENTS.md` | 每轮常驻 | 清理过程旁白与文档自指、开头答题（BLUF）、断言附依据与未完成项单列、简明语言与限定词保留、日常代码注释、按需 skill 分流 |
 | [plain-language](plain-language/SKILL.md) | 半自动（常驻规则点名、按 `description` 触发或手动调用） | 正式文档写作（报告、设计方案、README、PR 描述）、中英文改写润色、清理套话、Markdown 版式与工具检查 |
 | [communication-helper](communication-helper/SKILL.md) | 手动（`disable-model-invocation: true`） | 面向领导、客户、同事的邮件、即时消息与工作汇报语气适配 |
-| [git-commit](git-commit/SKILL.md) | 手动（`disable-model-invocation: true`） | Commit 描述结构（先写问题背景与影响，再写修改原因）与提交纪律 |
+| [git-commit](git-commit/SKILL.md) | 半自动（按 `description` 触发或手动调用） | Commit 描述结构（先写问题背景与影响，再写修改原因）与提交纪律 |
 | [no-comments](no-comments/SKILL.md) | 手动（`disable-model-invocation: true`） | 清理冗余与历史注释，将内部约束编码为类型、断言、测试或 lint |
 
 ### `AGENTS.md` 常驻规则示例
