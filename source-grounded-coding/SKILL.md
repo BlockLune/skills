@@ -15,19 +15,19 @@ Code facts first. Use memory to form search hypotheses, then ground decisions in
    - Completion: the needed source set is named, and missing evidence is visible.
 
 2. Pin the evidence.
-   - Prefer the active workspace. For missing dependency or external source, read [`references/EXTERNAL_REPOS.md`](references/EXTERNAL_REPOS.md).
+   - Prefer the active workspace. For missing dependency or external source, read [`references/external-repos.md`](references/external-repos.md).
    - Record a source packet: path, repo/package, version/ref/commit, and why it is relevant.
    - Completion: important sources are local and versioned, or explicitly marked unavailable/approximate.
 
 3. Trace the code path.
    - Read project instructions, metadata, entrypoints, relevant modules, tests, fixtures, and examples.
    - Follow definitions and call sites far enough to explain the behavior or choose the change.
-   - If maps, docs, or public examples would unblock the trace, read [`references/MCP_SCOUTS.md`](references/MCP_SCOUTS.md).
+   - If maps, docs, or public examples would unblock the trace, read [`references/mcp-scouts.md`](references/mcp-scouts.md).
    - Completion: each key claim is backed by `path:line`, `path:symbol`, or a named gap.
 
 4. Apply local idioms.
    - Match observed patterns for imports, errors, config, tests, naming, and public API shape.
-   - For reusable non-obvious patterns, read [`references/PATTERN_FILES.md`](references/PATTERN_FILES.md).
+   - For reusable non-obvious patterns, read [`references/pattern-files.md`](references/pattern-files.md).
    - Completion: implementation choices follow source evidence; exceptions are labeled as inference or assumption.
 
 5. Verify and report.
